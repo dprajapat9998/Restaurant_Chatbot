@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Talk-n-Treat (Dining-Refining) - A restaurant that transports you with delightful food">
+    <meta name="keywords" content="restaurant, dining, food, talk-n-treat">
+    <title>Talk-n-Treat (Dining-Refining)</title>
+    <link rel="icon" href="img/20230616_221600_0000.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar background">
+        <div class="logo">
+            <img src="img/logo.png" alt="Talk-n-Treat Logo">
+        </div>
+        <ul class="nav-list">
+            <li class="list"><a href="#">Home</a></li>
+            <li class="list"><a href="#">About Us</a></li>
+            <li class="list"><a href="#">Services</a></li>
+            <li class="list"><a href="#">Feedback</a></li>
+            <li class="list"><a href="#">Contact us</a></li>
+            <li class="list"><a href="#">Privacy Policy</a></li>
+        </ul>
+    </nav>
+    <div class="marq background">
+        <marquee behavior="alternate" direction="right">Today's Special: Shahi Paneer</marquee>
+    </div>
+    <section class="firstsec background">
+        <div class="main-box">
+            <div class="thumbnail">
+                <img src="img/chef-serving-food-happy-cook-260nw-1610215375.jpg" alt="Chef serving food">
+            </div>
+            <div class="title">
+                <p class="text-big">Talk-n-Treat (Dining-Refining)</p>
+                <br>
+                <p class="text-small">A good restaurant is like a vacation; it transports you, and it becomes a lot
+                    more than just about the food.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="form background">
+        <br>
+        <br>
+        <div class="form-box">
+            <div class="header-submit">
+                <h1 style="text-decoration: underline;">SIGN-IN</h1><br>
+                <h2 style="text-decoration: underline;">Welcome</h2>
+            </div>
+            <form action="/form" method="post" th:action="@{/form}" th:object="${userDetails}">
+                <div class="input-submit">
+                    <label for="name">Enter your name:</label>
+                    <input class="input" type="text" id="name" th:field="*{name}">
+                    <label for="num">Enter Mobile Number:</label>
+                    <input class="input" type="number" id="num" th:field="*{mobileNumber}">
+                </div>
+                <div class="button">
+                    <button class="btn-dk" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <br>
+        <br>
+    </section>
+
+    <hr>
+    <section class="extra-image">
+        <br><br>
+        <br>
+        <br>
+        <div class="para-img-main">
+            <p class="para-img">“Profit is not the legitimate purpose of business. The legitimate purpose of business
+                is to provide a product or service that people need and do it so well that it’s profitable.” ― James
+                Rouse</p>
+        </div>
+        <br>
+        <br>
+        <div class="img-box">
+            <div class="e-img-left">
+                <img src="img/depositphotos_218486630-stock-photo-delicious-healthy-indian-veg-food.jpg" alt="Delicious and healthy Indian veg food">
+            </div>
+            <div class="e-img-right">
+                <img src="img/gettyimages-919666108-612x612.jpg" alt="Food preparation">
+            </div>
+        </div>
+    </section>
+    <footer class="background">
+        <p class="fo">Copyright © 2017 www.Talk-n-Treat.com - All Rights Reserved</p>
+    </footer>
+
+    <script src="script/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <link rel="icon"
+        href="img/robot-icon-chat-bot-sign-support-service-concept-chatbot-character-flat-style-robot-icon-chat-bot-sign-support-service-138271515.jpg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #chat-container {
+            width: 800px;
+            height: 655px;
+            margin: 15px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #chat-messages {
+            height: 581px;
+            /* Adjust the height as needed */
+            overflow-y: scroll;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .user-message {
+            background-color: #e0f7fa;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: right;
+        }
+
+        .bot-message {
+            background-color: #b2dfdb;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+
+        #input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #eee;
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #send-button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #45a049;
+        }
+
+        .background {
+            background: rgb(0, 0, 0, 0.5) url(img/Number-Guessing-Game-using-JavaScript-12.jpg);
+            background-size: cover;
+            background-blend-mode: darken;
+        }
+    </style>
+    <!-- Update the JavaScript code in your chatbot interface -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userInput = document.getElementById("user-input");
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Scroll to the bottom of the chat container initially
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            function sendMessage() {
+                const userMessage = userInput.value.trim();
+
+                if (userMessage === "") {
+                    return;
+                }
+
+                // Display the user's message in the chat
+                displayMessage(userMessage, "user-message");
+
+                // Check if the user entered "upi"
+                if (userMessage.toLowerCase() === "upi") {
+                    // Display a message in the chat
+                    displayMessage("Sure! Making your payment via UPI. Please wait...", "bot-message");
+
+                    // Simulate server processing delay
+                    setTimeout(function () {
+                        // Display the response in the chat with the UPI QR code image
+                        displayMessage("Payment Successful! Make your payment using the QR code below:", "bot-message");
+                        displayUPIImage();
+                        displayMessage("Wait for 20 minutes after payment; your order will be ready. Thank you!", "bot-message");
+
+                        // Clear the user input field
+                        userInput.value = "";
+                    }, 2000); // Simulated delay of 2 seconds (adjust as needed)
+
+                    return;
+                }
+
+                // Make an HTTP request to the backend for other chatbot messages
+                fetch("/backend-endpoint", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ message: userMessage }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Display the response in the chat
+                        displayMessage(data.message, "bot-message");
+
+                        // Display UPI image if available
+                        if (data.upiImagePath) {
+                            displayUPIImage();
+                            chatMessages.appendChild("Make your payment and wait for 20 minutes; your order will be ready. Thank you!");
+                        }
+
+                        // Clear the user input field
+                        userInput.value = "";
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        displayMessage("An error occurred. Please try again.", "bot-message-error");
+
+                        // Clear the user input field
+                        userInput.value = "";
+                    });
+            }
+
+            function displayUPIImage() {
+                // Create an image element for the UPI QR code
+                const upiImage = document.createElement("img");
+                upiImage.src = "img/QR.png"; // Update with the actual path to your UPI QR code image
+                upiImage.alt = "UPI QR Code";
+                upiImage.style.width = "200px"; // Adjust the width as needed
+
+                // Append the image to the chat messages
+                chatMessages.appendChild(upiImage);
+
+                // Scroll to the bottom of the chat container
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function displayMessage(message, className) {
+                const messageElement = document.createElement("div");
+                messageElement.className = "message " + className;
+                messageElement.textContent = message;
+                chatMessages.appendChild(messageElement);
+
+                // Scroll to the bottom of the chat container
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            document.getElementById("send-button").addEventListener("click", sendMessage);
+
+            userInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+
+
+</head>
+
+<body class="background">
+    <div id="chat-container">
+        <div id="chat-messages">
+            <div class="message bot-message">Welcome to talk-n-treat!! Type (order) to start ordering!!</div>
+            <div class="message bot-message">Type (help) for help</div>
+            <!-- Add more messages here as needed -->
+        </div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+</body>
+
+</html>
